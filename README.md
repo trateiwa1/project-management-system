@@ -27,6 +27,7 @@ The API is designed following clean architecture principles using DTOs, services
 - Request validation
 
 - Swagger API documentation
+  
 
 ## Tech Stack
 
@@ -110,3 +111,37 @@ Returns:
 All protected endpoints require:
 
 Authorization: Bearer `<token>`
+
+
+## API Endpoints
+
+### Authentication
+| **Method** | **Endpoint** | **Description** |
+|------------|--------------|-----------------|
+| POST | `/auth/register` | Register new user |
+| POST | `/auth/login` | Login user |
+
+### Projects
+| **Method** | **Endpoint** | **Description** |
+|------------|--------------|-----------------|
+| POST | `/projects` | Create project |
+| GET | `/projects` | Get user's projects |
+| GET | `/projects/{id}` | Get project details |
+| DELETE | `/projects/{id}` | Delete project |
+| POST | `/projects/{projectId}/members/{userId}` | Add member to project |
+
+### Tasks
+| **Method** | **Endpoint** | **Description** |
+|------------|--------------|-----------------|
+| POST | `/projects/{projectId}/tasks` | Create task |
+| GET | `/projects/{projectId}/tasks` | Get project tasks |
+| PUT | `/tasks/{taskId}/assign/{userId}` | Assign task |
+| PUT | `/tasks/{taskId}/status` | Update task status |
+| DELETE | `/tasks/{taskId}` | Delete task |
+
+### Comments
+| **Method** | **Endpoint** | **Description** |
+|------------|--------------|-----------------|
+| POST | `/tasks/{taskId}/comments` | Add comment |
+| GET | `/tasks/{taskId}/comments` | Get task comments |
+| DELETE | `/comments/{commentId}` | Delete comment |
