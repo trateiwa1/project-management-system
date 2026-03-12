@@ -149,11 +149,13 @@ Authorization: Bearer `<token>`
 
 ## Running the Project
 ### 1. Clone the repository
+```
 git clone https://github.com/trateiwa1/project-management-system.git
-
+```
 ### 2. Navigate to project
-cd project-management-system-api
-
+```
+cd project-management-system
+```
 ### 3. Configure database
 
 Update application.properties:
@@ -222,17 +224,16 @@ TODO:
 - [ ] Configure database container
 - [ ] Add environment variables
 
-### Author
+## Author
+### Takundanashe Rateiwa
 
-Takundanashe Rateiwa
-
-Computer Engineering Student
-Backend Development | Java | Spring Boot | REST APIs
+Computer Engineering Student | Vistula University 
 
 GitHub:
-
-https://github.com/YOUR_USERNAME
-License
+```
+https://github.com/trateiwa1
+```
+## License
 
 This project is open-source and available for educational and portfolio purposes.
 
