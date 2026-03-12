@@ -56,6 +56,7 @@ Swagger / OpenAPI
 
 Maven
 
+
 ## Project Architecture
 
 The project follows a layered architecture:
@@ -70,8 +71,9 @@ Repository Layer
     Database
 ```
 
-### Structure:
+### Structure
 
+```
 src/main/java/com/example/pms
 
 config/        → Security & Swagger configuration
@@ -83,3 +85,28 @@ model/         → JPA entities
 repository/    → Spring Data repositories
 security/      → JWT authentication & filters
 service/       → Business logic
+```
+
+## Authentication
+
+The API uses JWT Bearer Tokens.
+
+### Register
+POST /auth/register
+
+### Login
+POST /auth/login
+
+Returns:
+```
+{
+  "id": 1,
+  "token": "JWT_TOKEN",
+  "email": "user@email.com",
+  "role": "USER"
+}
+```
+
+All protected endpoints require:
+
+Authorization: Bearer `<token>`
