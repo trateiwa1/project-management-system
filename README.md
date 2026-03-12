@@ -225,14 +225,12 @@ TODO:
 - [ ] Add environment variables
 
 ## Author
-### Takundanashe Rateiwa
 
-Computer Engineering Student | Vistula University 
+**Takundanashe Rateiwa**  
+Computer Engineering Student | Vistula University  
 
-GitHub:
-```
-https://github.com/trateiwa1
-```
+GitHub: [@trateiwa1](https://github.com/trateiwa1)
+
 ## License
 
 This project is open-source and available for educational and portfolio purposes.
