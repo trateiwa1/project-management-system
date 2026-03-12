@@ -196,6 +196,40 @@ OpenAPI Docs:
 ```
 http://localhost:8080/v3/api-docs
 ```
+## How to Try the API
+
+You can quickly test the API using Swagger UI by following these steps:
+
+**1. Open Swagger UI**
+
+Navigate to:  
+```
+http://localhost:8080/swagger-ui.html
+```
+**2. Register a New User**  
+- Go to **POST /auth/register**  
+- Fill in your **email**, **password**, and set **role** to `USER`  
+- Click **Execute**  
+
+**3. Login to Get a JWT Token**  
+- Go to **POST /auth/login**  
+- Enter the same email and password you used to register  
+- Click **Execute**  
+- Copy the `token` value from the response  
+
+**4. Authorize Swagger UI**  
+- Click **Authorize** (top-right corner of Swagger UI)  
+- Paste your token like this:  
+  ```
+  Bearer YOUR_JWT_TOKEN
+  ```  
+- Click **Authorize**, then **Close**  
+
+**5. Test Protected Endpoints**  
+- Now you can create projects, tasks, add comments, and perform other actions directly from Swagger UI  
+- All requests will automatically include your JWT token for authorization  
+
+> You must complete the registration and login steps first to access endpoints that require authentication.
 
 ## Security Features
 
