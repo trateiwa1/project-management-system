@@ -46,8 +46,8 @@ The API is designed following clean architecture principles using DTOs, services
 - JWT Authentication
 
 ### Database
-
-MySQL / PostgreSQL (configurable)
+- H2 (in-memory for development)
+- MySQL / PostgreSQL (can be configured for production)
 
 ### Documentation
 
@@ -156,15 +156,28 @@ git clone https://github.com/trateiwa1/project-management-system.git
 ```
 cd project-management-system
 ```
-### 3. Configure database
+### 3. Database
 
-Update application.properties:
+The project uses an **H2 in-memory database** for easy setup.
+
+No external database installation is required.
+
+The database is automatically created when the application starts.
+
+You can access the H2 console at:
 
 ```
-spring.datasource.url=jdbc:mysql://localhost:3306/pms
-spring.datasource.username=your_username
-spring.datasource.password=your_password
+http://localhost:8080/h2-console
 ```
+
+Use the following settings:
+
+```
+JDBC URL: jdbc:h2:mem:testdb
+User Name: sa
+Password: (leave empty)
+```
+
 ### 4. Run application
 ```
 mvn spring-boot:run
@@ -206,24 +219,52 @@ Example:
 }
 ```
 
-## Docker (Planned)
+## Docker
 
-## ⚠️ This section will be updated once Docker support is added
+The application can be run using Docker.
 
-Future Docker setup will include:
+### 1. Build the project
 
-- Dockerfile for Spring Boot application
-- Docker Compose configuration
-- Database container
-- Environment variable configuration
+```
+mvn clean package
+```
 
-TODO:
+This will generate the JAR file:
 
-- [ ] Create Dockerfile
-- [ ] Create docker-compose.yml
-- [ ] Configure database container
-- [ ] Add environment variables
+```
+target/project-management-system-0.0.1-SNAPSHOT.jar
+```
 
+### 2. Build Docker image
+
+```
+docker build -t pms-api .
+```
+
+### 3. Run container
+
+```
+docker run -p 8080:8080 pms-api
+```
+
+The API will be available at:
+
+```
+http://localhost:8080
+```
+
+Swagger documentation:
+
+```
+http://localhost:8080/swagger-ui.html
+```
+
+### Notes
+
+- The application uses an **H2 in-memory database**
+- No external database is required
+- Data resets when the container stops
+- 
 ## Author
 
 **Takundanashe Rateiwa**  
