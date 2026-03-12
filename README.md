@@ -158,7 +158,7 @@ cd project-management-system
 ```
 ### 3. Database
 
-The project uses an **H2 in-memory database** for easy setup.
+The project uses an **H2 in-memory database** for setup.
 
 No external database installation is required.
 
