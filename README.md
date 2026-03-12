@@ -145,3 +145,27 @@ Authorization: Bearer `<token>`
 | POST | `/tasks/{taskId}/comments` | Add comment |
 | GET | `/tasks/{taskId}/comments` | Get task comments |
 | DELETE | `/comments/{commentId}` | Delete comment |
+
+
+## Running the Project
+### 1. Clone the repository
+git clone https://github.com/trateiwa1/project-management-system.git
+
+### 2. Navigate to project
+cd project-management-system-api
+
+### 3. Configure database
+
+Update application.properties:
+
+```
+spring.datasource.url=jdbc:mysql://localhost:3306/pms
+spring.datasource.username=your_username
+spring.datasource.password=your_password
+```
+### 4. Run application
+mvn spring-boot:run
+
+Application runs on:
+
+http://localhost:8080
