@@ -298,7 +298,6 @@ http://localhost:8080/swagger-ui.html
 - The application uses an **H2 in-memory database**
 - No external database is required
 - Data resets when the container stops
-- 
 ## Author
 
 **Takundanashe Rateiwa**  
