@@ -38,7 +38,6 @@ public class TaskService {
 
     public User getCurrentUser(){
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
-
         return userRepository.findByEmail(email)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
     }
