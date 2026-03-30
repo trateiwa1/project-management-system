@@ -31,11 +31,17 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/register",
+                        .requestMatchers(
+                                "/auth/register",
                                 "/auth/login",
                                 "/v3/api-docs/**",
+                                "/v3/api-docs",
                                 "/swagger-ui/**",
-                                "/swagger-ui.html").permitAll()
+                                "/swagger-ui.html",
+                                "/swagger-resources/**",
+                                "/webjars/**",
+                                "/h2-console/**"
+                        ).permitAll()
                         .anyRequest().authenticated()
 
                 ) .authenticationProvider(authenticationProvider())

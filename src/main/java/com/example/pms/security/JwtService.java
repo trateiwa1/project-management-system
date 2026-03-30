@@ -32,7 +32,6 @@ public class JwtService {
     public boolean isTokenValid(String token, UserDetails userDetails) {
 
         Claims claims = parseToken(token);
-
         String username = claims.getSubject();
         Date expiration = claims.getExpiration();
 
