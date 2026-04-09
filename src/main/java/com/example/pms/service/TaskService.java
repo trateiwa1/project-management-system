@@ -14,10 +14,10 @@ import com.example.pms.repository.ProjectMemberRepository;
 import com.example.pms.repository.ProjectRepository;
 import com.example.pms.repository.TaskRepository;
 import com.example.pms.repository.UserRepository;
+import com.example.pms.security.SecurityContextService;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -27,24 +27,37 @@ public class TaskService {
     private final UserRepository userRepository;
     private final ProjectRepository projectRepository;
     private final ProjectMemberRepository projectMemberRepository;
+    private final SecurityContextService securityContextService;
 
     public TaskService(TaskRepository taskRepository, UserRepository userRepository,
-                       ProjectRepository projectRepository, ProjectMemberRepository projectMemberRepository){
+                       ProjectRepository projectRepository, ProjectMemberRepository projectMemberRepository, SecurityContextService securityContextService){
         this.taskRepository = taskRepository;
         this.userRepository = userRepository;
         this.projectRepository = projectRepository;
         this.projectMemberRepository = projectMemberRepository;
+        this.securityContextService = securityContextService;
     }
 
-    public User getCurrentUser(){
-        String email = SecurityContextHolder.getContext().getAuthentication().getName();
-        return userRepository.findByEmail(email)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+    public Page<TaskResponse> getTasksByProject(Long projectId, Pageable pageable){
+
+        Project project = projectRepository.findById(projectId)
+                .orElseThrow(() -> new ResourceNotFoundException("Project not found"));
+
+        securityContextService.requireMemberOrAdmin(project);
+
+        Page<Task> taskPage = taskRepository.findByProject(project, pageable);
+
+        return taskPage.map(taskResponsePage -> {
+            return new TaskResponse(taskResponsePage.getId(), taskResponsePage.getProject().getId(),
+                    taskResponsePage.getTitle(), taskResponsePage.getDescription(),
+                    taskResponsePage.getStatus(), taskResponsePage.getDueDate(),
+                    taskResponsePage.getAssignedUser().getId(), taskResponsePage.getAssignedUser().getEmail());
+        });
+
     }
 
+    @Transactional
     public TaskResponse createTask(Long projectId, TaskRequest request){
-
-        User currentUser = getCurrentUser();
 
         Project project = projectRepository.findById(projectId)
                 .orElseThrow(() -> new ResourceNotFoundException("Project not found"));
@@ -52,11 +65,7 @@ public class TaskService {
         User assignedUser = userRepository.findById(request.getAssignedUserId())
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
-        boolean currentUserIsMember = projectMemberRepository.existsByUserAndProject(currentUser, project);
-
-        if(!currentUserIsMember){
-            throw new UnauthorizedActionException("You are not allowed to create a task for this project");
-        }
+       securityContextService.requireMember(project);
 
         boolean assignedUserIsMember = projectMemberRepository.existsByUserAndProject(assignedUser, project);
 
@@ -74,8 +83,6 @@ public class TaskService {
     @Transactional
     public void assignTask(Long taskId, Long userId){
 
-        User currentUser = getCurrentUser();
-
         Task task = taskRepository.findById(taskId)
                 .orElseThrow(() -> new ResourceNotFoundException("Task not found"));
 
@@ -84,13 +91,7 @@ public class TaskService {
 
         Project project = task.getProject();
 
-        boolean isOwner = projectMemberRepository.existsByUserAndProjectAndRole(currentUser, project, RoleInProject.OWNER);
-
-        boolean isAdmin = currentUser.getRole() == GlobalRole.ADMIN;
-
-        if(!isOwner && !isAdmin){
-            throw new UnauthorizedActionException("You do not have permission to assign tasks in this project.");
-        }
+        securityContextService.requireOwnerOrAdmin(project);
 
         boolean isMember = projectMemberRepository.existsByUserAndProject(assignedUser, project);
 
@@ -106,63 +107,27 @@ public class TaskService {
     @Transactional
     public void updateTaskStatus(Long taskId, TaskStatus status) {
 
-        User currentUser = getCurrentUser();
+        User user = securityContextService.getCurrentUser();
 
         Task task = taskRepository.findById(taskId)
                 .orElseThrow(() -> new ResourceNotFoundException("Task not found"));
 
-        if (task.getAssignedUser() == null || !task.getAssignedUser().getId().equals(currentUser.getId())) {
+        if (task.getAssignedUser() == null || !task.getAssignedUser().getId().equals(user.getId())) {
             throw new UnauthorizedActionException("You are not allowed to update task status");
         }
 
         task.setStatus(status);
-
         taskRepository.save(task);
     }
 
-    public Page<TaskResponse> getTasksByProject(Long projectId, Pageable pageable){
-
-        User user = getCurrentUser();
-
-        Project project = projectRepository.findById(projectId)
-                .orElseThrow(() -> new ResourceNotFoundException("Project not found"));
-
-        boolean isMember = projectMemberRepository.existsByUserAndProject(user, project);
-
-        boolean isAdmin = user.getRole() == GlobalRole.ADMIN;
-
-        if(!isMember && !isAdmin){
-            throw new UnauthorizedActionException("You are not allowed to retrieve the tasks");
-        }
-
-        Page<Task> taskPage = taskRepository.findByProject(project, pageable);
-
-        return taskPage.map(taskResponsePage -> {
-            return new TaskResponse(taskResponsePage.getId(), taskResponsePage.getProject().getId(),
-                    taskResponsePage.getTitle(), taskResponsePage.getDescription(),
-                    taskResponsePage.getStatus(), taskResponsePage.getDueDate(),
-                    taskResponsePage.getAssignedUser().getId(), taskResponsePage.getAssignedUser().getEmail());
-        });
-
-    }
-
     public void deleteTask(Long taskId){
-
-        User currentUser = getCurrentUser();
 
         Task task = taskRepository.findById(taskId)
                 .orElseThrow(() -> new ResourceNotFoundException("Task not found"));
 
         Project project = task.getProject();
 
-        boolean isOwner = projectMemberRepository.existsByUserAndProjectAndRole(currentUser, project, RoleInProject.OWNER);
-
-        boolean isAdmin = currentUser.getRole() == GlobalRole.ADMIN;
-
-        if( !isOwner && !isAdmin && !currentUser.getId().equals(task.getAssignedUser().getId())){
-            throw new UnauthorizedActionException("You are not allowed to delete this task");
-        }
-
-        taskRepository.delete(task);
+       securityContextService.requireOwnerOrAdmin(project);
+       taskRepository.delete(task);
     }
 }
