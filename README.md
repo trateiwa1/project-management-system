@@ -118,17 +118,27 @@ docker build -t project-management-system .
 docker run -p 8080:8080 project-management-system
 ```
 
+## API Documentation
+- Swagger UI: http://localhost:8080/swagger-ui.html
+- OpenAPI Docs: http://localhost:8080/v3/api-docs
+- H2 Console: http://localhost:8080/h2-console
+- JDBC URL: jdbc:h2:mem:testdb
+  - Username: sa
+  - Password: (leave empty)
+
 ## Authentication
 
-The API uses JWT Bearer Tokens.
+All endpoints (except register/login) require a JWT token.
 
 ### Register
+```
 POST /auth/register
-
+```
 ### Login
+```
 POST /auth/login
-
-Returns:
+```
+Response:
 ```
 {
   "id": 1,
@@ -138,10 +148,10 @@ Returns:
 }
 ```
 
-All protected endpoints require:
-
-Authorization: Bearer `<token>`
-
+Use token in Swagger **(Click the Authorize button in the top right corner of Swagger UI)**:
+```
+Authorization: Bearer YOUR_TOKEN
+```
 
 ## API Endpoints
 
@@ -155,7 +165,7 @@ Authorization: Bearer `<token>`
 | **Method** | **Endpoint** | **Description** |
 |------------|--------------|-----------------|
 | POST | `/projects` | Create project |
-| GET | `/projects` | Get user's projects |
+| GET | `/projects` | Get user projects |
 | GET | `/projects/{id}` | Get project details |
 | DELETE | `/projects/{id}` | Delete project |
 | POST | `/projects/{projectId}/members/{userId}` | Add member to project |
@@ -166,7 +176,7 @@ Authorization: Bearer `<token>`
 | POST | `/projects/{projectId}/tasks` | Create task |
 | GET | `/projects/{projectId}/tasks` | Get project tasks |
 | PUT | `/tasks/{taskId}/assign/{userId}` | Assign task |
-| PUT | `/tasks/{taskId}/status` | Update task status |
+| PUT | `/tasks/status` | Update task status |
 | DELETE | `/tasks/{taskId}` | Delete task |
 
 ### Comments
@@ -176,6 +186,26 @@ Authorization: Bearer `<token>`
 | GET | `/tasks/{taskId}/comments` | Get task comments |
 | DELETE | `/comments/{commentId}` | Delete comment |
 
+## Testing
+
+The project includes **complete unit testing for the service classes using JUnit 5 and Mockito.**
+
+Run tests:
+```
+mvn test
+```
+### Test Coverage
+
+Unit tests cover **both success and failure** scenarios for all service classes:
+
+#### 1) ProjectService
+- Project creation, retrieval, and membership management.
+
+#### 2) TaskService
+- Task creation, assignment, status updates, and deletion.
+
+#### 3) CommentService
+- Comment creation, retrieval, and deletion.
 
 ## Running the Project
 ### 1. Clone the repository
