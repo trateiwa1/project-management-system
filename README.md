@@ -4,59 +4,58 @@ A Spring Boot REST API for managing projects, tasks, comments, and team collabor
 
 The API is designed following clean architecture principles using DTOs, services, repositories, and controllers.
 
+## Table of Contents
+- Features
+
+- Tech Stack
+  
+- Project Architecture
+  
+- Getting Started
+  
+- API Documentation
+  
+- Authentication
+  
+- API Endpoints
+
+- Testing
+  
+- Docker
+  
+- Project Structure
+
 ## Features
 
-- JWT Authentication (Register & Login)
-
-- Role-based authorization (Admin / User)
-
-- Project creation and management
-
-- Project membership system
-
-- Task creation and assignment
-
-- Task status management (To Do → In Progress → Done)
-
-- Comment system for tasks
-
-- Pagination support
-
-- Global exception handling
-
-- Request validation
-
-- Swagger API documentation
+- JWT Authentication (Secure login & registration)
   
+- Role-Based Access Control (USER, ADMIN)
+  
+- Project Management (Create, view, and delete projects)
+- Project Membership System (Add users to projects with roles)
+- Task Management (Create, assign, update, and delete tasks)
+- Task Status Tracking (TO_DO → IN_PROGRESS → DONE)
+- Comment System (Add and manage task discussions)
+- Pagination Support for scalable data retrieval
+- Global Exception Handling (Consistent API errors)
+- Request Validation (Input validation)
+- Swagger API Documentation
+- **Complete Unit Testing** (Success & Failure cases for all services)
 
 ## Tech Stack
 
-### Backend
-
-- Java 17
-
-- Spring Boot
-
-- Spring Security
-
-- Spring Data JPA
-
-- Hibernate
-
-- JWT Authentication
-
-### Database
-- H2 (in-memory for development)
-- MySQL / PostgreSQL (can be configured for production)
-
-### Documentation
-
-Swagger / OpenAPI
-
-### Build Tool
-
-Maven
-
+| Technology | Version |
+|------------|---------|
+| Java | 21 |
+| Spring Boot | 3.4.4 |
+| Spring Security | 3.4.4 |
+| Spring Data JPA | 3.4.4 |
+| H2 Database | In-memory |
+| JWT | 0.11.5 |
+| Maven | 3.11.0 |
+| Docker | Latest
+| Swagger/OpenAPI | 2.7.0 |
+| Lombok | 1.18.32 |
 
 ## Project Architecture
 
@@ -74,18 +73,20 @@ Repository Layer
 
 ### Structure
 
-```
-src/main/java/com/example/pms
+```bash
+src/main/java/com/example/pms/
+├── config/        → Security & Swagger configuration
+├── controller/    → REST API endpoints
+├── dto/           → Request/Response objects
+├── enums/         → Application enums
+├── exception/     → Global exception handling
+├── model/         → JPA entities
+├── repository/    → Spring Data repositories
+├── security/      → JWT authentication & filters
+└── service/       → Business logic
 
-config/        → Security & Swagger configuration
-controller/    → REST API endpoints
-dto/           → Request/Response objects
-enums/         → Application enums
-exception/     → Global exception handling
-model/         → JPA entities
-repository/    → Spring Data repositories
-security/      → JWT authentication & filters
-service/       → Business logic
+src/test/java/com/example/pms/
+└── service/       → Unit tests for service layer
 ```
 
 ## Authentication
