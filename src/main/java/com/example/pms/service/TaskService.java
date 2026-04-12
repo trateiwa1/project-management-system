@@ -2,6 +2,7 @@ package com.example.pms.service;
 
 import com.example.pms.dto.TaskRequest;
 import com.example.pms.dto.TaskResponse;
+import com.example.pms.dto.UpdateTaskStatusRequest;
 import com.example.pms.enums.GlobalRole;
 import com.example.pms.enums.RoleInProject;
 import com.example.pms.enums.TaskStatus;
@@ -38,6 +39,29 @@ public class TaskService {
         this.securityContextService = securityContextService;
     }
 
+    @Transactional
+    public TaskResponse createTask(Long projectId, TaskRequest request){
+
+        Project project = projectRepository.findById(projectId)
+                .orElseThrow(() -> new ResourceNotFoundException("Project not found"));
+
+        User assignedUser = userRepository.findById(request.getAssignedUserId())
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+
+        securityContextService.requireMember(project);
+
+        boolean assignedUserIsMember = projectMemberRepository.existsByUserAndProject(assignedUser, project);
+
+        if(!assignedUserIsMember){
+            throw new UnauthorizedActionException("The assigned user is not a member of this project");
+        }
+
+        Task task = new Task(request.getTitle(), request.getDescription(), project, assignedUser, request.getDueDate());
+        taskRepository.save(task);
+
+        return new TaskResponse(task.getId(), project.getId(), task.getTitle(), task.getDescription(), task.getStatus(), task.getDueDate(), assignedUser.getId(), assignedUser.getEmail());
+    }
+
     public Page<TaskResponse> getTasksByProject(Long projectId, Pageable pageable){
 
         Project project = projectRepository.findById(projectId)
@@ -54,30 +78,6 @@ public class TaskService {
                     taskResponsePage.getAssignedUser().getId(), taskResponsePage.getAssignedUser().getEmail());
         });
 
-    }
-
-    @Transactional
-    public TaskResponse createTask(Long projectId, TaskRequest request){
-
-        Project project = projectRepository.findById(projectId)
-                .orElseThrow(() -> new ResourceNotFoundException("Project not found"));
-
-        User assignedUser = userRepository.findById(request.getAssignedUserId())
-                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
-
-       securityContextService.requireMember(project);
-
-        boolean assignedUserIsMember = projectMemberRepository.existsByUserAndProject(assignedUser, project);
-
-        if(!assignedUserIsMember){
-            throw new UnauthorizedActionException("The assigned user is not a member of this project");
-        }
-
-        Task task = new Task(request.getTitle(), request.getDescription(), project, assignedUser, request.getDueDate());
-
-        taskRepository.save(task);
-
-        return new TaskResponse(task.getId(), project.getId(), task.getTitle(), task.getDescription(), task.getStatus(), task.getDueDate(), assignedUser.getId(), assignedUser.getEmail());
     }
 
     @Transactional
@@ -100,23 +100,22 @@ public class TaskService {
         }
 
         task.setAssignedUser(assignedUser);
-
         taskRepository.save(task);
     }
 
     @Transactional
-    public void updateTaskStatus(Long taskId, TaskStatus status) {
+    public void updateTaskStatus(UpdateTaskStatusRequest request) {
 
         User user = securityContextService.getCurrentUser();
 
-        Task task = taskRepository.findById(taskId)
+        Task task = taskRepository.findById(request.getTaskId())
                 .orElseThrow(() -> new ResourceNotFoundException("Task not found"));
 
         if (task.getAssignedUser() == null || !task.getAssignedUser().getId().equals(user.getId())) {
             throw new UnauthorizedActionException("You are not allowed to update task status");
         }
 
-        task.setStatus(status);
+        task.setStatus(request.getStatus());
         taskRepository.save(task);
     }
 

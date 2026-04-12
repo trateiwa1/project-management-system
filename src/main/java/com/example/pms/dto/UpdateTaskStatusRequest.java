@@ -5,21 +5,32 @@ import jakarta.validation.constraints.NotNull;
 
 public class UpdateTaskStatusRequest {
 
+    @NotNull(message = "Task ID is required")
+    private Long taskId;
+
     @NotNull(message = "Task status is required")
-    private TaskStatus taskStatus;
+    private TaskStatus status;
 
-    public UpdateTaskStatusRequest() {
+    public UpdateTaskStatusRequest() {}
+
+    public UpdateTaskStatusRequest(Long taskId, TaskStatus status) {
+        this.taskId = taskId;
+        this.status = status;
     }
 
-    public UpdateTaskStatusRequest(TaskStatus taskStatus) {
-        this.taskStatus = taskStatus;
+    public Long getTaskId() {
+        return taskId;
     }
 
-    public TaskStatus getTaskStatus() {
-        return taskStatus;
+    public void setTaskId(Long taskId) {
+        this.taskId = taskId;
     }
 
-    public void setTaskStatus(TaskStatus taskStatus) {
-        this.taskStatus = taskStatus;
+    public TaskStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(TaskStatus status) {
+        this.status = status;
     }
 }

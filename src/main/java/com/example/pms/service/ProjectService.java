@@ -31,31 +31,6 @@ public class ProjectService {
         this.securityContextService = securityContextService;
     }
 
-    public Page<ProjectResponse> getMyProjects(Pageable pageable) {
-
-        User user = securityContextService.getCurrentUser();
-
-        Page<ProjectMember> projectMemberPage = projectMemberRepository.findByUser(user, pageable);
-
-        return projectMemberPage.map(projectMember -> {
-
-            Project project = projectMember.getProject();
-
-            return new ProjectResponse(project.getId(), project.getName(), project.getDescription());
-        });
-    }
-
-
-    public ProjectResponse getProjectById(Long projectId) {
-
-        Project project = projectRepository.findById(projectId)
-                .orElseThrow(() -> new ResourceNotFoundException("Project not found"));
-
-        securityContextService.requireMember(project);
-
-        return new ProjectResponse(project.getId(), project.getName(), project.getDescription());
-    }
-
     @Transactional
     public ProjectResponse createProject(ProjectRequest request) {
 
@@ -70,6 +45,29 @@ public class ProjectService {
         return new ProjectResponse(project.getId(), project.getName(), project.getDescription());
     }
 
+    public Page<ProjectResponse> getMyProjects(Pageable pageable) {
+
+        User user = securityContextService.getCurrentUser();
+
+        Page<ProjectMember> projectMemberPage = projectMemberRepository.findByUser(user, pageable);
+
+        return projectMemberPage.map(projectMember -> {
+
+            Project project = projectMember.getProject();
+
+            return new ProjectResponse(project.getId(), project.getName(), project.getDescription());
+        });
+    }
+
+    public ProjectResponse getProjectById(Long projectId) {
+
+        Project project = projectRepository.findById(projectId)
+                .orElseThrow(() -> new ResourceNotFoundException("Project not found"));
+
+        securityContextService.requireMember(project);
+
+        return new ProjectResponse(project.getId(), project.getName(), project.getDescription());
+    }
 
     public void addMember(Long projectId, Long userId) {
 
