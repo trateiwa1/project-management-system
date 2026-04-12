@@ -213,6 +213,10 @@ docker build -t project-management-system .
 
 docker run -p 8080:8080 project-management-system
 ```
+The application runs at: 
+```
+http://localhost:8080
+```
 ## Author
 
 **Takundanashe Rateiwa**  
