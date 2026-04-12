@@ -89,6 +89,35 @@ src/test/java/com/example/pms/
 └── service/       → Unit tests for service layer
 ```
 
+## Getting Started
+### Prerequisites
+- Java 21+
+- Maven
+- Docker (optional)
+
+## Option 1: Run Locally
+```
+git clone https://github.com/trateiwa1/project-management-system.git
+
+cd project-management-system
+
+mvn clean package
+
+mvn spring-boot:run
+```
+Application runs at:
+```
+http://localhost:8080
+```
+## Option 2: Run with Docker
+```
+mvn clean package
+
+docker build -t project-management-system .
+
+docker run -p 8080:8080 project-management-system
+```
+
 ## Authentication
 
 The API uses JWT Bearer Tokens.
