@@ -22,8 +22,6 @@ The API is designed following clean architecture principles using DTOs, services
 - Testing
   
 - Docker
-  
-- Project Structure
 
 ## Features
 
@@ -207,157 +205,14 @@ Unit tests cover **both success and failure** scenarios for all service classes:
 #### 3) CommentService
 - Comment creation, retrieval, and deletion.
 
-## Running the Project
-### 1. Clone the repository
-```
-git clone https://github.com/trateiwa1/project-management-system.git
-```
-### 2. Navigate to project
-```
-cd project-management-system
-```
-### 3. Database
-
-The project uses an **H2 in-memory database** for setup.
-
-No external database installation is required.
-
-The database is automatically created when the application starts.
-
-You can access the H2 console at:
-
-```
-http://localhost:8080/h2-console
-```
-
-Use the following settings:
-
-```
-JDBC URL: jdbc:h2:mem:testdb
-User Name: sa
-Password: (leave empty)
-```
-
-### 4. Run application
-```
-mvn spring-boot:run
-```
-Application runs on:
-```
-http://localhost:8080
-```
-## API Documentation
-
-Swagger UI:
-```
-http://localhost:8080/swagger-ui.html
-```
-OpenAPI Docs:
-```
-http://localhost:8080/v3/api-docs
-```
-## How to Try the API
-
-You can quickly test the API using Swagger UI by following these steps:
-
-**1. Open Swagger UI**
-
-Navigate to:  
-```
-http://localhost:8080/swagger-ui.html
-```
-**2. Register a New User**  
-- Go to **POST /auth/register**  
-- Fill in your **email**, **password**, and set **role** to `USER`  
-- Click **Execute**  
-
-**3. Login to Get a JWT Token**  
-- Go to **POST /auth/login**  
-- Enter the same email and password you used to register  
-- Click **Execute**  
-- Copy the `token` value from the response  
-
-**4. Authorize Swagger UI**  
-- Click **Authorize** (top-right corner of Swagger UI)  
-- Paste your token like this:  
-  ```
-  Bearer YOUR_JWT_TOKEN
-  ```  
-- Click **Authorize**, then **Close**  
-
-**5. Test Protected Endpoints**  
-- Now you can create projects, tasks, add comments, and perform other actions directly from Swagger UI  
-- All requests will automatically include your JWT token for authorization  
-
-> You must complete the registration and login steps first to access endpoints that require authentication.
-
-## Security Features
-
-- JWT Authentication
-- BCrypt password hashing
-- Stateless sessions
-- Role-based authorization
-- Project membership validation
-- Ownership checks for critical actions
-
-## Error Handling
-
-Global exception handling returns consistent error responses:
-
-Example:
-```
-{
-  "error": "VALIDATION_FAILED",
-  "message": "Validation failed",
-  "timestamp": "2025-01-01T10:00:00"
-}
-```
-
 ## Docker
-
-The application can be run using Docker.
-
-### 1. Build the project
-
 ```
 mvn clean package
+
+docker build -t project-management-system .
+
+docker run -p 8080:8080 project-management-system
 ```
-
-This will generate the JAR file:
-
-```
-target/project-management-system-0.0.1-SNAPSHOT.jar
-```
-
-### 2. Build Docker image
-
-```
-docker build -t pms-api .
-```
-
-### 3. Run container
-
-```
-docker run -p 8080:8080 pms-api
-```
-
-The API will be available at:
-
-```
-http://localhost:8080
-```
-
-Swagger documentation:
-
-```
-http://localhost:8080/swagger-ui.html
-```
-
-### Notes
-
-- The application uses an **H2 in-memory database**
-- No external database is required
-- Data resets when the container stops
 ## Author
 
 **Takundanashe Rateiwa**  
