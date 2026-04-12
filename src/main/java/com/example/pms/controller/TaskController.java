@@ -43,7 +43,7 @@ public class TaskController {
         return ResponseEntity.ok().build();
     }
 
-    @PutMapping("/tasks/{taskId}/status")
+    @PutMapping("/tasks/status")
     public ResponseEntity<Void> updateTaskStatus(@Valid @RequestBody UpdateTaskStatusRequest request){
         taskService.updateTaskStatus(request);
         return ResponseEntity.ok().build();
