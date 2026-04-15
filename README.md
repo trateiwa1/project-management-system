@@ -111,9 +111,6 @@ Application runs at:
 ```
 http://localhost:8080
 ```
-> ⚠️This is a backend REST API (no frontend UI).  
-> Use Swagger UI to access and test endpoints when the application is running:
-> http://localhost:8080/swagger-ui.html
 
 ## Option 2: Run with Docker
 Build the application:
@@ -130,8 +127,11 @@ Run the container:
 ```
 docker run -p 8080:8080 project-management-system
 ```
+
+**> Note: This is a backend REST API - Use Swagger UI to access and test endpoints when the application is running: http://localhost:8080/swagger-ui/index.html**
+
 ## API Documentation
-- Swagger UI: http://localhost:8080/swagger-ui.html
+- Swagger UI: http://localhost:8080/swagger-ui/index.html
 - OpenAPI Docs: http://localhost:8080/v3/api-docs
 - H2 Console: http://localhost:8080/h2-console
 - JDBC URL: jdbc:h2:mem:testdb
