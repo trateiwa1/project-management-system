@@ -11,7 +11,7 @@ The API is designed following clean architecture principles using DTOs, services
   
 - Project Architecture
   
-- Getting Started
+- Getting Started (Running locally or with Docker)
   
 - API Documentation
   
@@ -20,8 +20,6 @@ The API is designed following clean architecture principles using DTOs, services
 - API Endpoints
 
 - Testing
-  
-- Docker
 
 ## Features
 
@@ -40,6 +38,8 @@ The API is designed following clean architecture principles using DTOs, services
 - Swagger API Documentation
 - **Complete Unit Testing** (Success & Failure cases for all services)
 
+---
+
 ## Tech Stack
 
 | Technology | Version |
@@ -54,6 +54,8 @@ The API is designed following clean architecture principles using DTOs, services
 | Docker | Latest
 | Swagger/OpenAPI | 2.7.0 |
 | Lombok | 1.18.32 |
+
+---
 
 ## Project Architecture
 
@@ -87,6 +89,8 @@ src/test/java/com/example/pms/
 └── service/       → Unit tests for service layer
 ```
 
+---
+
 ## Getting Started
 ### Prerequisites
 - Java 21+
@@ -108,14 +112,20 @@ Application runs at:
 http://localhost:8080
 ```
 ## Option 2: Run with Docker
+Build the application:
 ```
 mvn clean package
-
-docker build -t project-management-system .
-
-docker run -p 8080:8080 project-management-system
 ```
 
+Build the Docker image:
+```
+docker build -t project-management-system .
+```
+
+Run the container:
+```
+docker run -p 8080:8080 project-management-system
+```
 ## API Documentation
 - Swagger UI: http://localhost:8080/swagger-ui.html
 - OpenAPI Docs: http://localhost:8080/v3/api-docs
@@ -123,6 +133,8 @@ docker run -p 8080:8080 project-management-system
 - JDBC URL: jdbc:h2:mem:testdb
   - Username: sa
   - Password: (leave empty)
+ 
+---
 
 ## Authentication
 
@@ -150,6 +162,7 @@ Use token in Swagger **(Click the Authorize button in the top right corner of Sw
 ```
 Authorization: Bearer YOUR_TOKEN
 ```
+----
 
 ## API Endpoints
 
@@ -184,14 +197,12 @@ Authorization: Bearer YOUR_TOKEN
 | GET | `/tasks/{taskId}/comments` | Get task comments |
 | DELETE | `/comments/{commentId}` | Delete comment |
 
+---
+
 ## Testing
 
 The project includes **complete unit testing for the service classes using JUnit 5 and Mockito.**
 
-Run tests:
-```
-mvn test
-```
 ### Test Coverage
 
 Unit tests cover **both success and failure** scenarios for all service classes:
@@ -205,19 +216,18 @@ Unit tests cover **both success and failure** scenarios for all service classes:
 #### 3) CommentService
 - Comment creation, retrieval, and deletion.
 
-## Docker
-```
-mvn clean package
+### Running Tests
 
-docker build -t project-management-system .
+Run all tests using Maven:
 
-docker run -p 8080:8080 project-management-system
 ```
-The application runs at: 
+mvn clean install
 ```
-http://localhost:8080
+or
 ```
-## Author
+mvn test
+```
+---
 
 **Takundanashe Rateiwa**  
 Computer Engineering Student | Vistula University  
