@@ -111,6 +111,10 @@ Application runs at:
 ```
 http://localhost:8080
 ```
+> ⚠️This is a backend REST API (no frontend UI).  
+> Use Swagger UI to access and test endpoints when the application is running:
+> http://localhost:8080/swagger-ui.html
+
 ## Option 2: Run with Docker
 Build the application:
 ```
