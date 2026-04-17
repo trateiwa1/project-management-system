@@ -121,7 +121,7 @@ Start PostgreSQL (Docker)
 ```
 docker run --name postgres-db \
 -e POSTGRES_PASSWORD="Password&123" \
--e POSTGRES_DB=project_management_db \ 
+-e POSTGRES_DB=project_management_db \
 -p 5432:5432 \
 -d postgres:16
 ```
