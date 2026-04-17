@@ -110,9 +110,9 @@ The primary database used in this project is **PostgreSQL 16**.
 
 **Clone the repository and change the directory**
 ```
-git clone https://github.com/trateiwa1/ticket-booking-system.git  
+git clone https://github.com/trateiwa1/project-management-system.git  
 
-cd ticket-booking-system
+cd project-management-system
 ```
 
 **Option A: Run the application with Docker**
@@ -121,7 +121,7 @@ Start PostgreSQL (Docker)
 ```
 docker run --name postgres-db \
 -e POSTGRES_PASSWORD="Password&123" \
--e POSTGRES_DB=ticket_booking_db \
+-e POSTGRES_DB=project_management_db \ 
 -p 5432:5432 \
 -d postgres:16
 ```
