@@ -4,6 +4,7 @@ import com.example.pms.enums.RoleInProject;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "project_member")
 public class ProjectMember {
 
     @Id
