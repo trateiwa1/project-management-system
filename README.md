@@ -236,6 +236,8 @@ mvn test
 ```
 ---
 
+## Author
+
 **Takundanashe Rateiwa**  
 Computer Engineering Student | Vistula University  
 
